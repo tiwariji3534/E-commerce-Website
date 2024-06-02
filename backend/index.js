@@ -10,7 +10,7 @@ const cors = require("cors");
 app.use(express.json());    // jo request milega wo json k through pass hoga
 app.use(cors(
     {
-        origin: ["https://deploy-mern-1whq.vercel.app"],
+        origin: "*",
         methods: ["POST", "GET"],
         credentials: true
     }
