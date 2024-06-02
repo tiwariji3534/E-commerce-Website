@@ -8,7 +8,13 @@ const path = require("path");
 const cors = require("cors");
 
 app.use(express.json());    // jo request milega wo json k through pass hoga
-app.use(cors());          //  react js project connect to express on port 4000
+app.use(cors(
+    {
+        origin: ["https://deploy-mern-1whq.vercel.app"],
+        methods: ["POST", "GET"],
+        credentials: true
+    }
+));          //  react js project connect to express on port 4000
 
 
 // DATABASE CONNECTION WITH MONGODB
