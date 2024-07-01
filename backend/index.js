@@ -8,7 +8,8 @@ const app = express();
 
 // Use environment variables for configuration
 const PORT = process.env.PORT || 4000;
-// const MONGO_URI = "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce";
+const MONGO_URI = "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0";
+// "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce"
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 // Enable CORS with specific settings
@@ -21,13 +22,13 @@ app.use(cors({
 app.use(express.json()); // Middleware to parse JSON requests
 
 // Connect to MongoDB
-// mongoose.connect(MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }).then(() => console.log("MongoDB connected"))
-//   .catch(err => console.log("MongoDB connection error:", err));
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log("MongoDB connected"))
+  .catch(err => console.log("MongoDB connection error:", err));
 
-mongoose.connect("mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce")
+// mongoose.connect("mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce")
 
 // Define a simple route to check if the server is running
 app.get("/", (req, res) => {
