@@ -6,13 +6,12 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const corsConfig = {
-        origin: "*",
-        credentials: true,
-        methods: ["POST", "GET", "PUT", "DELETE"],
-    };
-app.option("",cors(corsConfig));
-app.use(cors(corsConfig));          //  react js project connect to express on port 4000
+app.use(cors(
+        {
+                origin: (""),
+                methods: ["POST","GET"],
+                credentials: true
+));
 
 app.use(express.json());    // jo request milega wo json k through pass hoga
 
