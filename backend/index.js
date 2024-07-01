@@ -7,7 +7,7 @@ const cors = require("cors");
 const app = express();
 
 // Use environment variables for configuration
-const PORT = process.env.PORT || 4000;
+const PORT = https://e-commerce-website-tym5.onrender.com || 4000;
 const MONGO_URI = "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0";
 // "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce"
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
