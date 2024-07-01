@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 // Enable CORS with specific settings
 app.use(cors({
-    origin: "*https://e-commerce-website-tym5.onrender.com", // Adjust this as per your client URL
+    origin: "*", // Adjust this as per your client URL
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 // Configure multer for image uploads
 const storage = multer.diskStorage({
-    destination: '/upload/images',
+    destination: './upload/images',
     filename: (req, file, cb) => {
         cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
     }
@@ -42,13 +42,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Serve images statically
-app.use('//images', express.static('upload/images'));
+app.use('/images', express.static('upload/images'));
 
 // Upload endpoint for images
 app.post("/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `/images/${req.file.filename}`
+        image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
 });
 
@@ -97,7 +97,7 @@ app.post('/removeproduct', async (req, res) => {
 });
 
 // Get all products
-app.get('//allproduct', async (req, res) => {
+app.get('/allproduct', async (req, res) => {
     try {
         let products = await Product.find({});
         res.send(products);
