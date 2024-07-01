@@ -8,7 +8,7 @@ const app = express();
 
 // Use environment variables for configuration
 const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce";
+const MONGO_URI = "mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce";
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 // Enable CORS with specific settings
