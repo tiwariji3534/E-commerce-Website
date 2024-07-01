@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 // Configure multer for image uploads
 const storage = multer.diskStorage({
-    destination: './upload/images',
+    destination: 'https://e-commerce-website-tym5.onrender.com/upload/images',
     filename: (req, file, cb) => {
         cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
     }
@@ -42,10 +42,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Serve images statically
-app.use('/images', express.static('upload/images'));
+app.use('https://e-commerce-website-tym5.onrender.com//images', express.static('upload/images'));
 
 // Upload endpoint for images
-app.post("/upload", upload.single('product'), (req, res) => {
+app.post("https://e-commerce-website-tym5.onrender.com/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
         image_url: `https://e-commerce-website-tym5.onrender.com/images/${req.file.filename}`
@@ -65,7 +65,7 @@ const Product = mongoose.model("Product", {
 });
 
 // Add a product
-app.post('/addproduct', async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/addproduct', async (req, res) => {
     let products = await Product.find({});
     let id = products.length ? products[products.length - 1].id + 1 : 1;
 
@@ -87,7 +87,7 @@ app.post('/addproduct', async (req, res) => {
 });
 
 // Remove a product
-app.post('/removeproduct', async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/removeproduct', async (req, res) => {
     try {
         await Product.findOneAndDelete({ id: req.body.id });
         res.json({ success: true, id: req.body.id });
@@ -97,7 +97,7 @@ app.post('/removeproduct', async (req, res) => {
 });
 
 // Get all products
-app.get('/allproduct', async (req, res) => {
+app.get('https://e-commerce-website-tym5.onrender.com//allproduct', async (req, res) => {
     try {
         let products = await Product.find({});
         res.send(products);
@@ -116,7 +116,7 @@ const Users = mongoose.model('Users', {
 });
 
 // Register a user
-app.post('/signup', async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/signup', async (req, res) => {
     let check = await Users.findOne({ email: req.body.email });
     if (check) {
         return res.status(400).json({ success: false, error: "User already exists with this email address" });
@@ -139,7 +139,7 @@ app.post('/signup', async (req, res) => {
 });
 
 // User login
-app.post('/login', async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/login', async (req, res) => {
     let user = await Users.findOne({ email: req.body.email });
     if (!user) {
         return res.status(400).json({ success: false, error: "Invalid email" });
@@ -154,7 +154,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Get new collections
-app.get('/newcollections', async (req, res) => {
+app.get('https://e-commerce-website-tym5.onrender.com/newcollections', async (req, res) => {
     try {
         let products = await Product.find({});
         let newCollection = products.slice(-8);
@@ -165,7 +165,7 @@ app.get('/newcollections', async (req, res) => {
 });
 
 // Get popular products in women's category
-app.get('/popularinwomen', async (req, res) => {
+app.get('https://e-commerce-website-tym5.onrender.com/popularinwomen', async (req, res) => {
     try {
         let products = await Product.find({ category: "women" });
         let popularInWomen = products.slice(0, 4);
@@ -191,7 +191,7 @@ const fetchUser = (req, res, next) => {
 };
 
 // Add product to cart
-app.post('/addtocart', fetchUser, async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/addtocart', fetchUser, async (req, res) => {
     try {
         let userData = await Users.findById(req.user.id);
         userData.cartData[req.body.itemId] = (userData.cartData[req.body.itemId] || 0) + 1;
@@ -203,7 +203,7 @@ app.post('/addtocart', fetchUser, async (req, res) => {
 });
 
 // Remove product from cart
-app.post('/removefromcart', fetchUser, async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/removefromcart', fetchUser, async (req, res) => {
     try {
         let userData = await Users.findById(req.user.id);
         if (userData.cartData[req.body.itemId] > 0) {
@@ -219,7 +219,7 @@ app.post('/removefromcart', fetchUser, async (req, res) => {
 });
 
 // Get cart data
-app.post('/getcart', fetchUser, async (req, res) => {
+app.post('https://e-commerce-website-tym5.onrender.com/getcart', fetchUser, async (req, res) => {
     try {
         let userData = await Users.findById(req.user.id);
         res.json(userData.cartData);
