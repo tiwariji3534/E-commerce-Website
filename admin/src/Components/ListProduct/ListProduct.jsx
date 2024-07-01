@@ -7,7 +7,7 @@ const ListProduct = () => {
   const [allproducts,setAllProducts] = useState([]);
 
   const fetchInfo = async ()=>{
-    await fetch('/allproduct')
+    await fetch('https://e-commerce-website-tym5.onrender.com//allproduct')
     .then((res)=>res.json()).then((data)=>{setAllProducts(data)});
   }
 
@@ -17,7 +17,7 @@ const ListProduct = () => {
 
 
     const remove = async (id)=>{
-      await fetch('/removeproduct',{
+      await fetch('https://e-commerce-website-tym5.onrender.com//removeproduct',{
         method:'POST',
         headers:{
           Accept:'application/json',
