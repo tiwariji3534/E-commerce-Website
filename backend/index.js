@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 // Enable CORS with specific settings
 app.use(cors({
-    origin: "*https://e-commerce-website-tym5.onrender.com", // Adjust this as per your client URL
+    origin: "*", // Adjust this as per your client URL
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 // Configure multer for image uploads
 const storage = multer.diskStorage({
-    destination: 'https://e-commerce-website-tym5.onrender.com/upload/images',
+    destination: '/upload/images',
     filename: (req, file, cb) => {
         cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
     }
@@ -42,13 +42,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Serve images statically
-app.use('https://e-commerce-website-tym5.onrender.com//images', express.static('upload/images'));
+app.use('//images', express.static('upload/images'));
 
 // Upload endpoint for images
-app.post("https://e-commerce-website-tym5.onrender.com/upload", upload.single('product'), (req, res) => {
+app.post("/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `https://e-commerce-website-tym5.onrender.com/images/${req.file.filename}`
+        image_url: `/images/${req.file.filename}`
     });
 });
 
@@ -65,7 +65,7 @@ const Product = mongoose.model("Product", {
 });
 
 // Add a product
-app.post('https://e-commerce-website-tym5.onrender.com/addproduct', async (req, res) => {
+app.post('/addproduct', async (req, res) => {
     let products = await Product.find({});
     let id = products.length ? products[products.length - 1].id + 1 : 1;
 
@@ -87,7 +87,7 @@ app.post('https://e-commerce-website-tym5.onrender.com/addproduct', async (req, 
 });
 
 // Remove a product
-app.post('https://e-commerce-website-tym5.onrender.com/removeproduct', async (req, res) => {
+app.post('/removeproduct', async (req, res) => {
     try {
         await Product.findOneAndDelete({ id: req.body.id });
         res.json({ success: true, id: req.body.id });
@@ -97,7 +97,7 @@ app.post('https://e-commerce-website-tym5.onrender.com/removeproduct', async (re
 });
 
 // Get all products
-app.get('https://e-commerce-website-tym5.onrender.com//allproduct', async (req, res) => {
+app.get('//allproduct', async (req, res) => {
     try {
         let products = await Product.find({});
         res.send(products);
@@ -116,7 +116,7 @@ const Users = mongoose.model('Users', {
 });
 
 // Register a user
-app.post('https://e-commerce-website-tym5.onrender.com/signup', async (req, res) => {
+app.post('/signup', async (req, res) => {
     let check = await Users.findOne({ email: req.body.email });
     if (check) {
         return res.status(400).json({ success: false, error: "User already exists with this email address" });
@@ -139,7 +139,7 @@ app.post('https://e-commerce-website-tym5.onrender.com/signup', async (req, res)
 });
 
 // User login
-app.post('https://e-commerce-website-tym5.onrender.com/login', async (req, res) => {
+app.post('/login', async (req, res) => {
     let user = await Users.findOne({ email: req.body.email });
     if (!user) {
         return res.status(400).json({ success: false, error: "Invalid email" });
@@ -154,7 +154,7 @@ app.post('https://e-commerce-website-tym5.onrender.com/login', async (req, res) 
 });
 
 // Get new collections
-app.get('https://e-commerce-website-tym5.onrender.com/newcollections', async (req, res) => {
+app.get('/newcollections', async (req, res) => {
     try {
         let products = await Product.find({});
         let newCollection = products.slice(-8);
@@ -165,7 +165,7 @@ app.get('https://e-commerce-website-tym5.onrender.com/newcollections', async (re
 });
 
 // Get popular products in women's category
-app.get('https://e-commerce-website-tym5.onrender.com/popularinwomen', async (req, res) => {
+app.get('/popularinwomen', async (req, res) => {
     try {
         let products = await Product.find({ category: "women" });
         let popularInWomen = products.slice(0, 4);
@@ -191,7 +191,7 @@ const fetchUser = (req, res, next) => {
 };
 
 // Add product to cart
-app.post('https://e-commerce-website-tym5.onrender.com/addtocart', fetchUser, async (req, res) => {
+app.post('/addtocart', fetchUser, async (req, res) => {
     try {
         let userData = await Users.findById(req.user.id);
         userData.cartData[req.body.itemId] = (userData.cartData[req.body.itemId] || 0) + 1;
@@ -203,7 +203,7 @@ app.post('https://e-commerce-website-tym5.onrender.com/addtocart', fetchUser, as
 });
 
 // Remove product from cart
-app.post('https://e-commerce-website-tym5.onrender.com/removefromcart', fetchUser, async (req, res) => {
+app.post('/removefromcart', fetchUser, async (req, res) => {
     try {
         let userData = await Users.findById(req.user.id);
         if (userData.cartData[req.body.itemId] > 0) {
@@ -219,7 +219,7 @@ app.post('https://e-commerce-website-tym5.onrender.com/removefromcart', fetchUse
 });
 
 // Get cart data
-app.post('https://e-commerce-website-tym5.onrender.com/getcart', fetchUser, async (req, res) => {
+app.post('/getcart', fetchUser, async (req, res) => {
     try {
         let userData = await Users.findById(req.user.id);
         res.json(userData.cartData);
