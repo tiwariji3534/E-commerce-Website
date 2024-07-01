@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 // Enable CORS with specific settings
 app.use(cors({
-    origin: "*", // Adjust this as per your client URL
+    origin: "*https://e-commerce-website-tym5.onrender.com", // Adjust this as per your client URL
     methods: ["POST", "GET"],
     credentials: true
 }));
