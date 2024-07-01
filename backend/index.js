@@ -13,7 +13,7 @@ app.use(cors());          //  react js project connect to express on port 4000
 
 // DATABASE CONNECTION WITH MONGODB
 
-mongoose.connect("mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce");
+mongoose.connect("mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0");
 // mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0"
 
 // API Creation
