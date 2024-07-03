@@ -6,11 +6,31 @@ const ListProduct = () => {
 
   const [allproducts,setAllProducts] = useState([]);
 
-  const fetchInfo = async ()=>{
-    await fetch('https://e-commerce-website-tym5.onrender.com/allproduct')
-    .then((res)=>res.json()).then((data)=>{setAllProducts(data)});
-  }
+  // const fetchInfo = async ()=>{
+  //   await fetch('https://e-commerce-website-tym5.onrender.com/allproduct')
+  //   .then((res)=>res.json()).then((data)=>{setAllProducts(data)});
+  // }
 
+  // Fetch product information with enhanced error handling and logging
+  const fetchInfo = async () => {
+    try {
+      const response = await fetch('https://e-commerce-website-tym5.onrender.com/allproduct', {
+        method: 'GET',
+        mode: 'cors' // Ensure this is set to handle cross-origin requests
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setAllProducts(data);
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+
+  
   useEffect(()=>{
     fetchInfo();
   },[])
