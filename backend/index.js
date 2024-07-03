@@ -8,12 +8,12 @@ const path = require("path");
 const cors = require("cors");
 
 app.use(express.json());    // jo request milega wo json k through pass hoga
-app.use(cors(https://e-commerce-website-1-admin.onrender.com));          //  react js project connect to express on port 4000
-// app.use(cors({
-//     origin: "*", // Set this to your frontend URL if applicable
-//     methods: ["POST", "GET"],
-//     credentials: true
-// }));
+// app.use(cors(https://e-commerce-website-1-admin.onrender.com));          //  react js project connect to express on port 4000
+app.use(cors({
+    origin: "https://e-commerce-website-1-admin.onrender.com", // Set this to your frontend URL if applicable
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 
 
 // DATABASE CONNECTION WITH MONGODB
