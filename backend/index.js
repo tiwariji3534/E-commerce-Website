@@ -7,6 +7,10 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 
+const multerS3 = require('multer-s3');
+const s3 = require('./s3Config');
+
+
 app.use(express.json());    // jo request milega wo json k through pass hoga
 app.use(cors());          //  react js project connect to express on port 4000
 // app.use(cors({
@@ -27,29 +31,70 @@ mongoose.connect("mongodb+srv://P1-Ecommerce:7459923419@cluster0.a71azht.mongodb
 app.get("/",(req,res)=>{
     res.send("Express App is Running")
 })
+            
+            
+            // // Image storage Engine
+            
+            // const storage = multer.diskStorage({           //It creates a storage engine that stores files on the disk.
+            //     destination: './upload/images',            //This line specifies the destination directory where uploaded files will be stored.
+            //     filename: (req,file,cb)=>{                 //his line defines the function to determine the filename of the uploaded file.     cb- callback
+            //         return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)          //This line generates the filename for the uploaded file..
+            //     }
+            // })
+            
+            // const upload = multer({storage:storage})
+            
+            
+            // // Creating upload endpoint for images
+            // app.use('/images',express.static('upload/images'))
+            
+            // app.post("/upload",upload.single('product'),(req,res)=>{
+            //     res.json({
+            //         success:1,
+            //         image_url:`https://e-commerce-website-tym5.onrender.com/images/${req.file.filename}`
+            //     })
+            // })
+            
 
 
-// Image storage Engine
 
-const storage = multer.diskStorage({           //It creates a storage engine that stores files on the disk.
-    destination: './upload/images',            //This line specifies the destination directory where uploaded files will be stored.
-    filename: (req,file,cb)=>{                 //his line defines the function to determine the filename of the uploaded file.     cb- callback
-        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)          //This line generates the filename for the uploaded file..
+// Use multer-s3 to store files directly to S3
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: process.env.S3_BUCKET_NAME,
+    acl: 'public-read', // Make the uploaded files publicly readable
+    metadata: (req, file, cb) => {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: (req, file, cb) => {
+      cb(null, `images/${Date.now()}_${file.originalname}`); // Customize the file name
     }
-})
+  })
+});
 
-const upload = multer({storage:storage})
+// Upload endpoint using S3
+app.post("/upload", upload.single('product'), (req, res) => {
+  res.json({
+    success: 1,
+    image_url: https://e-commerce-website-tym5.onrender.com/images/${req.file.filename} // S3 URL
+  });
+});
+
+// Your existing code for other endpoints
+
+const port = 4000;
+app.listen(port, (error) => {
+  if (!error) {
+    console.log("Server Running on port " + port);
+  } else {
+    console.log("Error " + error);
+  }
+});
 
 
-// Creating upload endpoint for images
-app.use('/images',express.static('upload/images'))
 
-app.post("/upload",upload.single('product'),(req,res)=>{
-    res.json({
-        success:1,
-        image_url:`https://e-commerce-website-tym5.onrender.com/images/${req.file.filename}`
-    })
-})
+
 
 
 // Schema for creating products
